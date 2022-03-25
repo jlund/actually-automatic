@@ -1,0 +1,53 @@
+# The Apple Support URL listed below is where the latest security release notes
+# are always posted.
+#
+# `$VERSION` will be replaced with the relevant iOS version number.
+notification_text: |
+  Apple has released iOS $VERSION.
+
+  https://support.apple.com/en-us/HT201222
+
+
+slack:
+  enabled: no
+
+  # Follow these steps to create a new Slack app and set up an incoming webhook:
+  #   https://api.slack.com/messaging/webhooks#getting_started
+  webhook_urls:
+    - https://hooks.slack.com/services/ZZZ/ZZZZ/ZZZZZ
+
+
+sms:
+  enabled: no
+
+  # You can create a new project, provision a new number, and retrieve the
+  # associated SID and auth token in the Twilio console.
+  twilio_number: "+15558675309"
+  twilio_account_sid: ACZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+  twilio_auth_token: 23111111111111111111111111111111
+
+  recipients:
+    - +18015551234
+    - +18015555678
+
+
+smtp:
+  enabled: no
+
+  server: smtp.example.com
+  port: 465
+  tls: yes
+
+  auth_user: user@example.com
+  auth_pass: SUPER_SECURE_PASSWORD
+
+  # This can remain set to localhost unless your SMTP server validates
+  # the helo domain during authentication.
+  helo_domain: localhost
+
+  subject: A new iOS update is available!
+
+  from_email: Sender Name <sender.name@example.com>
+  bcc_recipients:
+    - recipient.one@example.com
+    - recipient.two@example.com
