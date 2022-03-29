@@ -16,7 +16,7 @@ module UpdateNotifier
     desc "notify", "Send a notification if a new iOS update has been released since the last update was seen."
     long_desc <<-LONGDESC
       When the command is run for the first time, a new `LAST_SEEN` file is created
-      and the date of the initial execution is recorded. Notifications are only
+      and the date of Apple's last iOS release is recorded. Notifications are only
       sent if a new release is discovered with a posting date that is more recent
       than the value in the `LAST_SEEN` file.
 
@@ -42,9 +42,7 @@ module UpdateNotifier
         puts "New update discovered: #{latest_update['ProductVersion']} -- Sending notifications."
 
         notification_text = config['notification_text'].gsub('$VERSION', latest_update['ProductVersion'])
-
         send_notifications(notification_text)
-
         update_last_seen(Date.parse(latest_update["PostingDate"]))
       end
 
@@ -91,9 +89,11 @@ module UpdateNotifier
         return Date.parse(File.read(last_seen_file))
       else
         say("First run! Creating a new `LAST_SEEN` file.", :green)
-        first_run_date = DateTime.now
-        update_last_seen(first_run_date)
-        return first_run_date
+        most_recent = pmv["PublicAssetSets"]["iOS"].max_by { |u| Date.parse(u["PostingDate"]) }
+        initial_timestamp = Date.parse(most_recent["PostingDate"])
+
+        update_last_seen(initial_timestamp)
+        return initial_timestamp
       end
     end
 
