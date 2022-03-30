@@ -2,7 +2,7 @@ require 'twilio-ruby'
 
 module UpdateNotifier
   class SMS
-    def self.send(notification_message, config)
+    def self.notify(notification_message, config)
       if config['enabled']
         client = Twilio::REST::Client.new(config['twilio_account_sid'], config['twilio_auth_token'])
 

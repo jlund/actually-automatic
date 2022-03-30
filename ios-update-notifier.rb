@@ -124,9 +124,9 @@ module UpdateNotifier
         exit(false)
       end
 
-      UpdateNotifier::Slack.send(notification_text, config['slack'])
-      UpdateNotifier::SMS.send(notification_text, config['sms'])
-      UpdateNotifier::SMTP.send(notification_text, config['smtp'])
+      UpdateNotifier::Slack.notify(notification_text, config['slack'])
+      UpdateNotifier::SMS.notify(notification_text, config['sms'])
+      UpdateNotifier::SMTP.notify(notification_text, config['smtp'])
     end
 
     def update_last_seen(date)

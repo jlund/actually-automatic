@@ -1,6 +1,6 @@
 module UpdateNotifier
   class Slack
-    def self.send(notification_message, config)
+    def self.notify(notification_message, config)
       if config['enabled']
         post_hash = { text: notification_message }
 

@@ -2,7 +2,7 @@ require 'net/smtp'
 
 module UpdateNotifier
   class SMTP
-    def self.send(notification_message, config)
+    def self.notify(notification_message, config)
       if config['enabled']
         smtp = Net::SMTP.new(config['server'], config['port'])
 
