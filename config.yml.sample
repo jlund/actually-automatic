@@ -1,5 +1,5 @@
-# The Apple Support URL listed below is where the latest security release notes
-# are always posted.
+# The Apple Support URL listed below is where the latest security release
+# notes are always posted.
 #
 # `$VERSION` will be replaced with the relevant iOS version number.
 notification_text: |
@@ -8,27 +8,37 @@ notification_text: |
   https://support.apple.com/en-us/HT201222
 
 
+simpletexting_sms:
+  enabled: no
+
+  account_phone: 8885551234
+  api_key: 111XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+  # Every iOS release notification is sent as a SimpleTexting "campaign."
+  # The campaign title prefix is used to generate the campaign name that
+  # will appear in the Campaigns section of the SimpleTexting admin
+  # interface, e.g., `iOS Update Notification 2022-04-16`.
+  #
+  # The campaign title prefix won't be displayed anywhere else and it's
+  # not part of the notification text that list subscribers will receive.
+  campaign_title_prefix: "iOS Update Notification"
+
+  # The unsubscribe text appears at the end of every update
+  unsubscribe_text: "Reply STOP to unsubscribe."
+
+  list_ids:
+    - ios-update-subscribers
+    - another-example-list
+
+
 slack:
   enabled: no
 
-  # Follow these steps to create a new Slack app and set up an incoming webhook:
+  # Follow these steps to create a new Slack app and set up an
+  # incoming webhook:
   #   https://api.slack.com/messaging/webhooks#getting_started
   webhook_urls:
     - https://hooks.slack.com/services/ZZZ/ZZZZ/ZZZZZ
-
-
-sms:
-  enabled: no
-
-  # You can create a new project, provision a new number, and retrieve the
-  # associated SID and auth token in the Twilio console.
-  twilio_number: "+15558675309"
-  twilio_account_sid: ACZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
-  twilio_auth_token: 23111111111111111111111111111111
-
-  recipients:
-    - +18015551234
-    - +18015555678
 
 
 smtp:
@@ -41,8 +51,8 @@ smtp:
   auth_user: user@example.com
   auth_pass: SUPER_SECURE_PASSWORD
 
-  # This can remain set to localhost unless your SMTP server validates
-  # the helo domain during authentication.
+  # Unless your SMTP server validates the helo domain during
+  # authentication, this can remain set to localhost.
   helo_domain: localhost
 
   subject: A new iOS update is available!
@@ -51,3 +61,17 @@ smtp:
   bcc_recipients:
     - recipient.one@example.com
     - recipient.two@example.com
+
+
+twilio_sms:
+  enabled: no
+
+  # You can create a new project, provision a new number, and retrieve the
+  # associated SID and auth token in the Twilio console.
+  twilio_number: "+15558675309"
+  twilio_account_sid: ACZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+  twilio_auth_token: 23111111111111111111111111111111
+
+  recipients:
+    - +18015551234
+    - +18015555678

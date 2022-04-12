@@ -15,10 +15,10 @@ module UpdateNotifier
         Subject: #{config['subject']}
         HEADERS
 
+        message = email_headers + notification_message
+
         smtp.start(config['helo_domain'], config['auth_user'], config['auth_pass'], :login) do
-          smtp.send_message(notification_message.prepend(email_headers),
-                            config['from_email'],
-                            config['bcc_recipients'])
+          smtp.send_message(message, config['from_email'], config['bcc_recipients'])
         end
       end
     end
