@@ -35,7 +35,7 @@ module UpdateNotifier
       latest update).
     LONGDESC
     def notify
-      latest_update = new_updates.max_by { |u| Gem::Version.new(u['ProductVersion']) }
+      latest_update = highest_version(new_updates)
 
       if latest_update.nil?
         puts "No new updates found."
@@ -48,6 +48,18 @@ module UpdateNotifier
       end
 
       File.write("#{__dir__}/LAST_RUN", DateTime.now)
+    end
+
+    desc "show", "Show information about the latest iOS release."
+    def show
+      show_release = highest_version(pmv)
+
+      say("Latest iOS release information:", :green)
+      puts "  iOS #{show_release['ProductVersion']}"
+      puts "  Released: #{show_release['PostingDate']}"
+      puts "  Expires:  #{show_release['ExpirationDate']}"
+      puts "  Supported devices (#{show_release['SupportedDevices'].size}):"
+      puts "    #{show_release['SupportedDevices']}"
     end
 
     desc "test", "Send a test message to verify that notifications are configured correctly."
@@ -86,12 +98,16 @@ module UpdateNotifier
       end
     end
 
+    def highest_version(versions)
+      versions.max_by { |v| Gem::Version.new(v['ProductVersion']) }
+    end
+
     def last_seen
       if File.exists?(last_seen_file)
         return Date.parse(File.read(last_seen_file))
       else
         say("First run! Creating a new `LAST_SEEN` file.", :green)
-        most_recent = pmv["PublicAssetSets"]["iOS"].max_by { |u| Date.parse(u["PostingDate"]) }
+        most_recent = highest_version(pmv)
         initial_timestamp = Date.parse(most_recent["PostingDate"])
 
         update_last_seen(initial_timestamp)
@@ -104,7 +120,7 @@ module UpdateNotifier
     end
 
     def new_updates
-      pmv["PublicAssetSets"]["iOS"].select do |k, v|
+      pmv.select do |k, v|
         Date.parse(k["PostingDate"]) > last_seen &&
         k["SupportedDevices"].any? { |v| v.start_with?("iPhone") }
       end
@@ -116,7 +132,7 @@ module UpdateNotifier
 
     def pmv
       response = HTTParty.get("https://gdmf.apple.com/v2/pmv", { ssl_ca_file: "#{__dir__}/apple.pem", headers: {"User-Agent" => "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:98.0) Gecko/20100101 Firefox/98.0"} })
-      JSON.parse(response.body)
+      JSON.parse(response.body)["PublicAssetSets"]["iOS"]
     end
 
     def send_notifications(notification_text)
