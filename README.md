@@ -67,6 +67,14 @@ Great question! Apple could easily add an additional toggle to the existing Auto
 
 Hopefully they will do that someday.
 
+### Does quickly installing updates really matter?
+
+It's difficult to fix something without also revealing what's broken. Within moments of any new iOS release, people all over the world start closely examining the changes. Some of those people are not good people, and some of them learn about new vulnerabilities that they can start exploiting right away before the update has been widely deployed.
+
+Similarly, any attackers who already knew about the vulnerability previously had a reason to be judicious and careful in how they used it. They wanted the vulnerability to remain secret so that Apple wouldn't fix it. However, now they may instead be motivated to race against the update and try to compromise as many devices as possible before the window for exploiting this previously hidden vulnerability has completely closed. 
+
+When it comes to installing security-related bug fixes and updates, faster is always better.
+
 ## Legal
 
 All trademarks are property of their respective trademark holders. Not affiliated with Apple.
