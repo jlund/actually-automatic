@@ -17,22 +17,14 @@ module UpdateNotifier
     desc "notify", "Send a notification if a new iOS update has been released since the last update was seen."
     long_desc <<-LONGDESC
       When the command is run for the first time, a new `LAST_SEEN` file is created
-      and the date of Apple's last iOS release is recorded. Notifications are only
-      sent if a new release is discovered with a posting date that is more recent
-      than the value in the `LAST_SEEN` file.
+      to store the version number of the latest iOS release. Notifications are only
+      sent if a new release is discovered with a version number that is larger than
+      the latest value in the `LAST_SEEN` file.
 
-      As a result (and by design!) the initial run will never trigger
-      any notifications.
+      As a result (and by design) the initial run will never trigger notifications.
 
-      During subsequent runs, notifications will be sent and the `LAST_SEEN` value
-      will be modified to reflect the release date of the latest version whenever
-      a new update is detected.
-
-      To ensure timely notifications, running this command frequently (e.g. every
-      45 minutes) is recommended. However, in the event that multiple updates get
-      released between the most recent `LAST_SEEN` date and the current execution
-      time, only one set of notifications will be sent (and only for the
-      latest update).
+      During subsequent runs, notifications are sent and the `LAST_SEEN` value is
+      updated whenever a new version is detected.
     LONGDESC
     def notify
       latest_update = highest_version(new_updates)
@@ -40,11 +32,11 @@ module UpdateNotifier
       if latest_update.nil?
         puts "No new updates found."
       else
-        puts "New update discovered: #{latest_update['ProductVersion']} -- Sending notifications."
+        puts "New update found: #{latest_update['ProductVersion']} (#{latest_update['PostingDate']}) -- Sending notifications."
 
         notification_text = config['notification_text'].gsub('$VERSION', latest_update['ProductVersion'])
         send_notifications(notification_text)
-        update_last_seen(Date.parse(latest_update["PostingDate"]))
+        update_last_seen(latest_update['ProductVersion'])
       end
 
       File.write("#{__dir__}/LAST_RUN", DateTime.now)
@@ -104,14 +96,13 @@ module UpdateNotifier
 
     def last_seen
       if File.exists?(last_seen_file)
-        return Date.parse(File.read(last_seen_file))
+        return Gem::Version.new(File.read(last_seen_file))
       else
         say("First run! Creating a new `LAST_SEEN` file.", :green)
-        most_recent = highest_version(pmv)
-        initial_timestamp = Date.parse(most_recent["PostingDate"])
+        latest_version_number = highest_version(pmv)['ProductVersion']
 
-        update_last_seen(initial_timestamp)
-        return initial_timestamp
+        update_last_seen(latest_version_number)
+        return Gem::Version.new(latest_version_number)
       end
     end
 
@@ -121,7 +112,7 @@ module UpdateNotifier
 
     def new_updates
       pmv.select do |k, v|
-        Date.parse(k["PostingDate"]) > last_seen &&
+        Gem::Version.new(k['ProductVersion']) > last_seen &&
         k["SupportedDevices"].any? { |v| v.start_with?("iPhone") }
       end
     end
@@ -131,8 +122,8 @@ module UpdateNotifier
     end
 
     def pmv
-      response = HTTParty.get("https://gdmf.apple.com/v2/pmv", { ssl_ca_file: "#{__dir__}/apple.pem", headers: {"User-Agent" => "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:98.0) Gecko/20100101 Firefox/98.0"} })
-      JSON.parse(response.body)["PublicAssetSets"]["iOS"]
+      @response ||= HTTParty.get("https://gdmf.apple.com/v2/pmv", { ssl_ca_file: "#{__dir__}/apple.pem", headers: {"User-Agent" => "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:98.0) Gecko/20100101 Firefox/98.0"} })
+      JSON.parse(@response.body)["PublicAssetSets"]["iOS"]
     end
 
     def send_notifications(notification_text)
@@ -148,8 +139,8 @@ module UpdateNotifier
       UpdateNotifier::TwilioSMS.notify(notification_text, config['twilio_sms'])
     end
 
-    def update_last_seen(date)
-        File.write(last_seen_file, date.strftime("%Y-%m-%d"))
+    def update_last_seen(version_number)
+        File.write(last_seen_file, version_number)
     end
 
     def self.exit_on_failure?
