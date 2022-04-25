@@ -113,7 +113,7 @@ module UpdateNotifier
     def new_updates
       pmv.select do |k, v|
         Gem::Version.new(k['ProductVersion']) > last_seen &&
-        k["SupportedDevices"].any? { |v| v.start_with?("iPhone") }
+        k['SupportedDevices'].any? { |v| v.start_with?("iPhone") }
       end
     end
 
@@ -123,7 +123,7 @@ module UpdateNotifier
 
     def pmv
       @response ||= HTTParty.get("https://gdmf.apple.com/v2/pmv", { ssl_ca_file: "#{__dir__}/ca/apple.pem", headers: {"User-Agent" => "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:98.0) Gecko/20100101 Firefox/98.0"} })
-      JSON.parse(@response.body)["PublicAssetSets"]["iOS"]
+      JSON.parse(@response.body)['PublicAssetSets']['iOS']
     end
 
     def send_notifications(notification_text)
