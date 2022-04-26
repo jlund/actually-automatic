@@ -1,50 +1,47 @@
 # Quasi Automatic - iOS Update Notifier
 
-The "Automatic Updates" feature in iOS can be slow and unpredictable. Start installing the latest security fixes and new features without the wait! Get notified via Slack, email, and/or SMS whenever Apple releases a new iOS update.
+The "Automatic Updates" feature in iOS is slow and unpredictable. Get notified whenever Apple releases a new iOS update, and start installing the latest security fixes and new features without the wait!
 
 The choice is yours:
-* Set this little program up on your own server.
-  * Protocols supported: Slack, SMS (via [SimpleTexting](https://simpletexting.com/) or [Twilio](https://www.twilio.com/sms)), and SMTP (for email alerts).
-* Or simply text "subscribe" to ***+1-833-942-4941*** to sign up to receive informational text messages about new iOS releases.
-  * Notifications are sent using the same open source program in this repo.
+* Simply text "subscribe" to ***+1-833-942-4941*** to sign up to receive informational text messages about new iOS releases.
   * Your number will never be bought or sold or used for any other purposes.
   * This is a toll-free number, but carrier message and data rates may apply.
     * In other words, your cellular provider may charge you to send and receive text messages, but this number itself doesn't cost anything extra.
   * Text "stop" to instantly unsubscribe.
+* Or you can follow the self-hosting instructions to send notifications about new iOS updates from your own server (see [SETUP.md](SETUP.md)).
+  * Protocols supported: Slack, SMS (via [SimpleTexting](https://simpletexting.com/) or [Twilio](https://www.twilio.com/sms)), and SMTP (for email alerts).
 
 ## Questions and Answers
 
-### Why is this important?
+### Why does this matter?
 
-**iOS doesn't tell you when a new update is available.**
+> "Keeping your software up to date is one of the most important things you can do to maintain your Apple product's security." -- [Apple](https://support.apple.com/en-us/HT201222)
 
-It can take several days (or longer!) before your phone even attempts to download a new update. At the same time, almost every new iOS release includes important security updates and bug fixes for a variety of vulnerabilities. It's increasingly common for this boilerplate statement to appear within iOS update documents:
+Almost every new iOS release includes critical bug fixes for a variety of security vulnerabilities, but **iOS doesn't tell you when a new update is available.**
 
-> Apple is aware of a report that this issue may have been actively exploited.
-
-Quickly installing updates is a good habit to get into, and this project's goal is to help make that a littler easier.
+This project's goal is to help close that gap.
 
 ### Wait, aren't iOS updates automatic?
 
-Sort of. Sometimes.
+Sort of. Slowly. Sometimes.
 
-If Automatic Updates are enabled (`Settings > General > Software Update > Automatic Updates`), an iPhone *might* decide to download and install a new iOS update when all of the following conditions are true:
+If Automatic Updates are enabled (`Settings > General > Software Update > Automatic Updates`), your iPhone *might* download and install the new iOS update several days or weeks later — but only if all of the following conditions are true:
 
 1. It's plugged in or resting on a wireless charger.
 2. It's connected to WiFi.
 3. It thinks that it's "overnight."
    * Users can also chose an installation time in the notification that only appears **after** an update has already been downloaded, but this download won't happen automatically without a WiFi connection.
 
-There are a lot of ways that three seemingly simple rules can sometimes go wrong ([just ask Isaac Asimov](https://en.wikipedia.org/wiki/Three_Laws_of_Robotics)). These rules are no exception.
+There are a lot of ways that three seemingly simple rules can go wrong ([just ask Isaac Asimov](https://en.wikipedia.org/wiki/Three_Laws_of_Robotics)). These rules are no exception.
 
 Here are a few examples where automatic updates sometimes don't work very well under real-world conditions:
 
 * **No WiFi.**
   * No automatic updates.
 * **Annoying captive-portal WiFi.**
-  * Unless you really commit to repeatedly filling out those tiny forms that ask for your last name and hotel room number every couple of hours, you might not be connected to WiFi during the pivotal and opaque moment when iOS decides to check for and download an update.
+  * Unless you really commit to repeatedly filling out those tiny forms that ask for your last name and hotel room number every couple of hours, it's possible that you won't be connected to WiFi during the pivotal and opaque moment when iOS decides to check for and download an update.
 * **You have the audacity to charge your phone during the day or in your own car.**
-  * There might not be a need to plug in your phone again at home if it's already fully charged.
+  * There's no need to plug in your phone again at home if it's already fully charged.
   * You probably don't have WiFi in your car.
 * **You recently flew through the air on a work trip or dream vacation.**
   * The concept of "overnight" isn't always compatible with time zones (or adventure).
@@ -59,13 +56,13 @@ Even with the ideal combination of flawless WiFi, an uninterrupted connection to
 
 The reply from [Craig Federighi](https://www.apple.com/leadership/craig-federighi/) (which exists in the form of a screenshot, not in any official documentation) states that iOS updates are rolled out incrementally and that automatic updates begin "1-4 weeks later (after we've received feedback on the update)."
 
-For users in high-risk environments or professions, "1-4 weeks later" could feel approximately 1-4 weeks too late.
+For users and organizations who care about security, "1-4 weeks later" could feel approximately 1-4 weeks too late.
 
 ### Shouldn't people be given the option to get notified about new updates right away?
 
-A staged roll-out strategy (that can take up to 4 weeks!) makes a bit of sense when introducing new features. Let the enthusiasts who habitually check for updates in the Settings app kick the tires for a bit first, and then start a full-scale roll-out after responding to their feedback and making any necessary adjustments.
+A staged roll-out strategy (that can take up to 4 weeks!) might make a bit of sense when introducing new features. Let the enthusiasts who habitually check for updates in the Settings app kick the tires first, and then start a full-scale roll-out after responding to their feedback and making any necessary adjustments.
 
-The problem, of course, is that Apple oftentimes deploys fixes for critical security vulnerabilities right alongside new features in the same release. A month-long staged roll-out process arguably doesn't make much sense for something like a use-after-free vulnerability that places millions of users and their data at risk of compromise.
+The problem, of course, is that Apple oftentimes deploys fixes for critical security vulnerabilities right alongside new features in the same release. A month-long staged roll-out process arguably doesn't make much sense for a security fix that could help protect millions of users and their data.
 
 Apple could easily add an additional toggle to the existing Automatic Updates settings page (e.g. "Notify When Available") and this entire project would no longer be necessary.
 
