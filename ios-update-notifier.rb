@@ -9,6 +9,7 @@ require 'thor'
 require 'yaml'
 require_relative 'lib/simpletexting-sms.rb'
 require_relative 'lib/slack.rb'
+require_relative 'lib/telegram.rb'
 require_relative 'lib/twilio-sms.rb'
 require_relative 'lib/smtp.rb'
 
@@ -67,7 +68,8 @@ module UpdateNotifier
       puts "  Slack enabled: #{config['slack']['enabled']}"
       puts "  SMS (SimpleTexting) enabled: #{config['simpletexting_sms']['enabled']}"
       puts "  SMS (Twilio) enabled: #{config['twilio_sms']['enabled']}"
-      puts "  SMTP enabled: #{config['smtp']['enabled']}\n\n"
+      puts "  SMTP enabled: #{config['smtp']['enabled']}"
+      puts "  Telegram enabled: #{config['telegram']['enabled']}\n\n"
 
       say("Test message:", :green)
       puts "  #{test_message}\n\n"
@@ -122,7 +124,7 @@ module UpdateNotifier
     end
 
     def nothing_is_enabled?
-       !config['simpletexting_sms']['enabled'] && !config['slack']['enabled'] && !config['smtp']['enabled'] && !config['twilio_sms']['enabled']
+       !config['simpletexting_sms']['enabled'] && !config['slack']['enabled'] && !config['smtp']['enabled'] && !config['telegram']['enabled'] && !config['twilio_sms']['enabled']
     end
 
     def pmv
@@ -155,6 +157,7 @@ module UpdateNotifier
       UpdateNotifier::SimpleTextingSMS.notify(notification_text, config['simpletexting_sms'])
       UpdateNotifier::Slack.notify(notification_text, config['slack'])
       UpdateNotifier::SMTP.notify(notification_text, config['smtp'])
+      UpdateNotifier::Telegram.notify(notification_text, config['telegram'])
       UpdateNotifier::TwilioSMS.notify(notification_text, config['twilio_sms'])
     end
 

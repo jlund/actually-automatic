@@ -71,6 +71,18 @@ smtp:
     - recipient.two@example.com
 
 
+telegram:
+  enabled: no
+
+  # Message @botfather on Telegram to set up a new bot and
+  # to get a token.
+  token: 5555555555:AAFYZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+
+  chat_ids:
+    - "@softwareupdates"
+    - "@secondexamplechannel"
+
+
 twilio_sms:
   enabled: no
 
