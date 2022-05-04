@@ -1,11 +1,9 @@
 # Quasi Automatic - iOS Update Notifier
 ## Self-Hosting Instructions
 
-### Initial Setup
-1. Install Ruby:
-   * `sudo apt/dnf install ruby`
-1. Install Bundler:
-   * `sudo gem install bundler`
+### Initial Setup (Ubuntu 22.04)
+1. Install Ruby and compilation dependencies:
+   * `sudo apt install ruby ruby-dev build-essential`
 1. Create a new user account that will run the update checks and whose home directory will store the program:
    * `sudo adduser iosupdate`
 1. Switch to the new user account:
