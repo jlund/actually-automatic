@@ -53,6 +53,7 @@ module UpdateNotifier
       puts "  iOS #{show_release['ProductVersion']}"
       puts "  Released: #{show_release['PostingDate']}"
       puts "  Expires:  #{show_release['ExpirationDate']}"
+      puts "  Link:     #{security_link(show_release['ProductVersion'])}"
       puts "  Supported devices (#{show_release['SupportedDevices'].size}):"
       puts "    #{show_release['SupportedDevices']}"
     end
