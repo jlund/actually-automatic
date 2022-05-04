@@ -4,6 +4,7 @@ require 'bundler/setup'
 require 'date'
 require 'httparty'
 require 'json'
+require 'nokogiri'
 require 'thor'
 require 'yaml'
 require_relative 'lib/simpletexting-sms.rb'
@@ -34,8 +35,10 @@ module UpdateNotifier
       else
         puts "New update found: #{latest_update['ProductVersion']} (#{latest_update['PostingDate']}) -- Sending notifications."
 
-        notification_text = config['notification_text'].gsub('$VERSION', latest_update['ProductVersion'])
-        send_notifications(notification_text)
+        config['notification_text'].gsub!('$VERSION', latest_update['ProductVersion'])
+        config['notification_text'].gsub!('$LINK',    security_link(latest_update['ProductVersion']))
+
+        send_notifications(config['notification_text'])
         update_last_seen(latest_update['ProductVersion'])
       end
 
@@ -124,6 +127,21 @@ module UpdateNotifier
     def pmv
       @response ||= HTTParty.get("https://gdmf.apple.com/v2/pmv", { ssl_ca_file: "#{__dir__}/ca/apple.pem", headers: {"User-Agent" => "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:98.0) Gecko/20100101 Firefox/98.0"} })
       JSON.parse(@response.body)['PublicAssetSets']['iOS']
+    end
+
+    def security_link(version)
+      security_index_url  = "https://support.apple.com/en-us/HT201222"
+      security_index_html = HTTParty.get(security_index_url).body
+
+      doc = Nokogiri::HTML(security_index_html)
+
+      version_link = doc.at("a[text()^='iOS #{version}']")
+
+      if version_link.nil?
+        return security_index_url
+      else
+        return version_link[:href]
+      end
     end
 
     def send_notifications(notification_text)
