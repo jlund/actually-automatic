@@ -16,6 +16,7 @@ notification_text: |
   $LINK
 
 
+# SimpleTexting (https://simpletexting.com/)
 simpletexting_sms:
   enabled: no
 
@@ -39,6 +40,7 @@ simpletexting_sms:
     - another-example-list
 
 
+# Slack (https://slack.com/)
 slack:
   enabled: no
 
@@ -49,6 +51,7 @@ slack:
     - https://hooks.slack.com/services/ZZZ/ZZZZ/ZZZZZ
 
 
+# Email (SMTP protocol)
 smtp:
   enabled: no
 
@@ -71,11 +74,11 @@ smtp:
     - recipient.two@example.com
 
 
+# Telegram (https://telegram.org/)
 telegram:
   enabled: no
 
-  # Message @botfather on Telegram to set up a new bot and
-  # to get a token.
+  # Message @botfather on Telegram to set up a new bot.
   token: 5555555555:AAFYZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
 
   chat_ids:
@@ -83,6 +86,7 @@ telegram:
     - "@secondexamplechannel"
 
 
+# Twilio (https://www.twilio.com/)
 twilio_sms:
   enabled: no
 
