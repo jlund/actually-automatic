@@ -64,12 +64,17 @@ module UpdateNotifier
     def test
       test_message = options[:message].chomp
 
+      say("Config info:", :green)
+      puts "  You can edit the `config.yml` file to configure and enable"
+      puts "  different notification services."
+      puts "    e.g. `enabled: no` -> `enabled: yes` or `enabled: true`\n\n"
+
       say("Config status:", :green)
-      puts "  Slack enabled: #{config['slack']['enabled']}"
-      puts "  SMS (SimpleTexting) enabled: #{config['simpletexting_sms']['enabled']}"
-      puts "  SMS (Twilio) enabled: #{config['twilio_sms']['enabled']}"
-      puts "  SMTP enabled: #{config['smtp']['enabled']}"
-      puts "  Telegram enabled: #{config['telegram']['enabled']}\n\n"
+      puts "  Slack enabled: #{service_is_enabled?('slack')}"
+      puts "  SMS (SimpleTexting) enabled: #{service_is_enabled?('simpletexting_sms')}"
+      puts "  SMS (Twilio) enabled: #{service_is_enabled?('twilio_sms')}"
+      puts "  SMTP enabled: #{service_is_enabled?('smtp')}"
+      puts "  Telegram enabled: #{service_is_enabled?('telegram')}\n\n"
 
       say("Test message:", :green)
       puts "  #{test_message}\n\n"
@@ -123,10 +128,6 @@ module UpdateNotifier
       end
     end
 
-    def nothing_is_enabled?
-       !config['simpletexting_sms']['enabled'] && !config['slack']['enabled'] && !config['smtp']['enabled'] && !config['telegram']['enabled'] && !config['twilio_sms']['enabled']
-    end
-
     def pmv
       @response ||= HTTParty.get("https://gdmf.apple.com/v2/pmv", { ssl_ca_file: "#{__dir__}/ca/apple.pem", headers: {"User-Agent" => "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:98.0) Gecko/20100101 Firefox/98.0"} })
       JSON.parse(@response.body)['PublicAssetSets']['iOS']
@@ -148,17 +149,21 @@ module UpdateNotifier
     end
 
     def send_notifications(notification_text)
-      if nothing_is_enabled?
-        say("No notification methods are enabled.", :red)
-        puts "Please edit the config.yml file and enable at least one type of notification."
-        exit(false)
-      end
+      UpdateNotifier::SimpleTextingSMS.notify(notification_text, config['simpletexting_sms']) if service_is_enabled?('simpletexting_sms')
+      UpdateNotifier::Slack.notify(notification_text, config['slack']) if service_is_enabled?('slack')
+      UpdateNotifier::SMTP.notify(notification_text, config['smtp']) if service_is_enabled?('smtp')
+      UpdateNotifier::Telegram.notify(notification_text, config['telegram']) if service_is_enabled?('telegram')
+      UpdateNotifier::TwilioSMS.notify(notification_text, config['twilio_sms']) if service_is_enabled?('twilio_sms')
+    end
 
-      UpdateNotifier::SimpleTextingSMS.notify(notification_text, config['simpletexting_sms'])
-      UpdateNotifier::Slack.notify(notification_text, config['slack'])
-      UpdateNotifier::SMTP.notify(notification_text, config['smtp'])
-      UpdateNotifier::Telegram.notify(notification_text, config['telegram'])
-      UpdateNotifier::TwilioSMS.notify(notification_text, config['twilio_sms'])
+    def service_is_enabled?(service)
+      if config[service].nil?
+        return false
+      elsif config[service]['enabled'].nil?
+        return false
+      else
+        return config[service]['enabled']
+      end
     end
 
     def update_last_seen(version_number)
