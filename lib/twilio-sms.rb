@@ -7,11 +7,11 @@ module UpdateNotifier
                       password: config['twilio_auth_token'] }
 
       config['recipients'].each do |recipient|
-        post_body = { "To" => recipient,
-                      "From" => config['twilio_number'],
-                      "Body" => notification_message }
+        request_body = { "To" => recipient,
+                         "From" => config['twilio_number'],
+                         "Body" => notification_message }
 
-        HTTParty.post(url, body: post_body, basic_auth: credentials)
+        HTTParty.post(url, body: request_body, basic_auth: credentials)
       end
     end
   end
