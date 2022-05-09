@@ -70,15 +70,15 @@ module UpdateNotifier
       puts "  different notification services."
       puts "    e.g. `enabled: no` -> `enabled: yes` or `enabled: true`\n\n"
 
-      say("Config status:", :green)
-      puts "  Discord enabled: #{service_is_enabled?('discord')}"
-      puts "  Slack enabled: #{service_is_enabled?('slack')}"
-      puts "  SMS (SimpleTexting) enabled: #{service_is_enabled?('simpletexting_sms')}"
-      puts "  SMS (Twilio) enabled: #{service_is_enabled?('twilio_sms')}"
-      puts "  SMTP enabled: #{service_is_enabled?('smtp')}"
-      puts "  Telegram enabled: #{service_is_enabled?('telegram')}\n\n"
+      say("Services enabled:", :green)
+      puts "  - Discord"             if service_is_enabled?('discord')
+      puts "  - Slack"               if service_is_enabled?('slack')
+      puts "  - SMS (SimpleTexting)" if service_is_enabled?('simpletexting_sms')
+      puts "  - SMS (Twilio)"        if service_is_enabled?('twilio_sms')
+      puts "  - SMTP"                if service_is_enabled?('smtp')
+      puts "  - Telegram"            if service_is_enabled?('telegram')
 
-      say("Test message:", :green)
+      say("\nTest message:", :green)
       puts "  #{test_message}\n\n"
 
       continue = ask("Would you like to continue?", limited_to: ["yes", "no"], default: "no")
