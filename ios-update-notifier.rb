@@ -7,6 +7,7 @@ require 'json'
 require 'nokogiri'
 require 'thor'
 require 'yaml'
+require_relative 'lib/discord.rb'
 require_relative 'lib/simpletexting-sms.rb'
 require_relative 'lib/slack.rb'
 require_relative 'lib/telegram.rb'
@@ -70,6 +71,7 @@ module UpdateNotifier
       puts "    e.g. `enabled: no` -> `enabled: yes` or `enabled: true`\n\n"
 
       say("Config status:", :green)
+      puts "  Discord enabled: #{service_is_enabled?('discord')}"
       puts "  Slack enabled: #{service_is_enabled?('slack')}"
       puts "  SMS (SimpleTexting) enabled: #{service_is_enabled?('simpletexting_sms')}"
       puts "  SMS (Twilio) enabled: #{service_is_enabled?('twilio_sms')}"
@@ -149,6 +151,7 @@ module UpdateNotifier
     end
 
     def send_notifications(notification_text)
+      UpdateNotifier::Discord.notify(notification_text, config['discord']) if service_is_enabled?('discord')
       UpdateNotifier::SimpleTextingSMS.notify(notification_text, config['simpletexting_sms']) if service_is_enabled?('simpletexting_sms')
       UpdateNotifier::Slack.notify(notification_text, config['slack']) if service_is_enabled?('slack')
       UpdateNotifier::SMTP.notify(notification_text, config['smtp']) if service_is_enabled?('smtp')

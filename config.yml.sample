@@ -16,6 +16,17 @@ notification_text: |
   $LINK
 
 
+# Discord (https://discord.com/)
+discord:
+  enabled: no
+
+  # Follow the steps in the "Making a Webhook" section to enable
+  # Discord integration:
+  #   https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks
+  webhook_urls:
+    - https://discord.com/api/webhooks/999999999999999999/vZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+
+
 # SimpleTexting (https://simpletexting.com/)
 simpletexting_sms:
   enabled: no
