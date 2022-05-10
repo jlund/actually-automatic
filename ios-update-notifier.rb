@@ -8,6 +8,7 @@ require 'nokogiri'
 require 'thor'
 require 'yaml'
 require_relative 'lib/discord.rb'
+require_relative 'lib/signal.rb'
 require_relative 'lib/simpletexting-sms.rb'
 require_relative 'lib/slack.rb'
 require_relative 'lib/telegram.rb'
@@ -72,6 +73,7 @@ module UpdateNotifier
 
       say("Services enabled:", :green)
       puts "  - Discord"             if service_is_enabled?('discord')
+      puts "  - Signal"              if service_is_enabled?('signal')
       puts "  - Slack"               if service_is_enabled?('slack')
       puts "  - SMS (SimpleTexting)" if service_is_enabled?('simpletexting_sms')
       puts "  - SMS (Twilio)"        if service_is_enabled?('twilio_sms')
@@ -152,6 +154,7 @@ module UpdateNotifier
 
     def send_notifications(notification_text)
       UpdateNotifier::Discord.notify(notification_text, config['discord']) if service_is_enabled?('discord')
+      UpdateNotifier::Signal.notify(notification_text, config['signal']) if service_is_enabled?('signal')
       UpdateNotifier::SimpleTextingSMS.notify(notification_text, config['simpletexting_sms']) if service_is_enabled?('simpletexting_sms')
       UpdateNotifier::Slack.notify(notification_text, config['slack']) if service_is_enabled?('slack')
       UpdateNotifier::SMTP.notify(notification_text, config['smtp']) if service_is_enabled?('smtp')

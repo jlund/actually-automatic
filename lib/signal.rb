@@ -1,0 +1,13 @@
+module UpdateNotifier
+  class Signal
+    def self.notify(notification_message, config)
+      # `signal-cli` needs to periodically "receive" and process new
+      # messages (such as incoming delivery receipts).
+      system("#{config['signal_cli_executable']}", "-u", "#{config['account_phone']}", "receive")
+
+      config['recipients'].each do |recipient|
+        system("#{config['signal_cli_executable']}", "-u", "#{config['account_phone']}", "send", "-m", "#{notification_message}", "#{recipient}")
+      end
+    end
+  end
+end

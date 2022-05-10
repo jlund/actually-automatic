@@ -27,6 +27,26 @@ discord:
     - https://discord.com/api/webhooks/999999999999999999/vZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
 
 
+# Signal (https://signal.org/)
+signal:
+  enabled: no
+
+  # - Signal notifications are considered experimental.
+  #
+  # - There isn't currently an officially supported method for sending
+  #   programmatic Signal messages (e.g. from bots like this).
+  #
+  # - See SETUP.md for more information.
+  signal_cli_executable: /usr/local/bin/signal-cli
+
+  # Phone number that was registered and verified with `signal-cli`.
+  account_phone: "+18015551234"
+
+  recipients:
+    - +18015551234
+    - +18015555678
+
+
 # SimpleTexting (https://simpletexting.com/)
 simpletexting_sms:
   enabled: no
