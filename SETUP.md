@@ -12,7 +12,7 @@
    * `git clone https://github.com/jlund/actually-automatic.git`
 5. Install the bundle:
    * `bundle config set path 'vendor/bundle'`
-   * `cd ios-update-notifier && bundle install`
+   * `cd actually-automatic && bundle install`
 6. Create a copy of the sample configuration file:
    * `cp config.yml.sample config.yml`
 7. **(Optional)** To enable support for sending update notifications via [Signal](https://signal.org/), you will need to [install](https://github.com/AsamK/signal-cli#installation) and [configure](https://github.com/AsamK/signal-cli/wiki/Quickstart#set-up-an-account) the *unofficial* [signal-cli](https://github.com/AsamK/signal-cli) client.
@@ -45,7 +45,7 @@ If these commands both work, then you're almost done. The final step is to confi
 2. Edit the crontab to periodically run the `notify` subcommand:
    * `crontab -e`
 3. Add this line to the bottom of the file to check for updates every 45 minutes:
-   * `*/45 * * * * cd /home/iosupdate/ios-update-notifier && ruby ios-update-notifier.rb notify`
+   * `*/45 * * * * cd /home/iosupdate/actually-automatic && ruby ios-update-notifier.rb notify`
    * Be sure to update the home directory if you chose a different username.
 
 All set! You can verify that the cron is working by watching the timestamp in the `LAST_RUN` file in the repo directory.
