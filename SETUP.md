@@ -1,4 +1,4 @@
-# Quasi Automatic - iOS Update Notifier
+# Actually Automatic
 ## Self-Hosting Instructions
 
 ### Initial Setup (Ubuntu 22.04)
@@ -9,7 +9,7 @@
 3. Switch to the new user account:
    * `sudo su iosupdate`
 4. Clone the repository:
-   * `git clone https://github.com/jlund/ios-update-notifier.git`
+   * `git clone https://github.com/jlund/actually-automatic.git`
 5. Install the bundle:
    * `bundle config set path 'vendor/bundle'`
    * `cd ios-update-notifier && bundle install`

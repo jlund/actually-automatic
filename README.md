@@ -1,21 +1,38 @@
-# Quasi Automatic - iOS Update Notifier
+# Actually Automatic
+## Automatic iOS update notifications that actually work 🤯
 
 The "Automatic Updates" feature in iOS is slow and unpredictable. Get notified whenever Apple releases a new iOS update, and start installing the latest security fixes and new features without the wait!
 
-The choice is yours:
-* Simply text "subscribe" to ***+1-833-942-4941*** to sign up to receive informational text messages about new iOS releases.
-  * Your number will never be bought or sold or used for any other purposes.
-  * This is a toll-free number, but carrier message and data rates may apply.
-    * In other words, your cellular provider may charge you to send and receive text messages, but this number itself doesn't cost anything extra.
-  * Text "stop" to instantly unsubscribe.
-* Or you can follow the self-hosting instructions to send notifications about new iOS updates from your own server (see [SETUP.md](SETUP.md)).
-  * Protocols supported: Slack, SMS (via [SimpleTexting](https://simpletexting.com/) or [Twilio](https://www.twilio.com/sms)), and SMTP (for email alerts).
+**Supported services:**
+* [Discord](https://discord.com/)
+* Email ([SMTP](https://en.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol))
+* [Signal](https://signal.org/)
+* [Slack](https://slack.com/)
+* [SMS](https://en.wikipedia.org/wiki/SMS)
+  * [SimpleTexting](https://simpletexting.com/)
+  * [Twilio](https://www.twilio.com/sms)
+* [Telegram](https://telegram.org/)
+
+## The Easy Way or the Easier Way
+
+You can follow the self-hosting [setup instructions](SETUP.md) to send custom notifications about new iOS updates from your own server.
+
+To make things even easier, the Actually Automatic project maintains a couple of free notification options that are powered by the same open source program — no setup necessary!
+
+* Join the [@SoftwareUpdates](https://t.me/SoftwareUpdates) channel on Telegram.
+
+  ![QR code shortcut for @SoftwareUpdates on Telegram](images/telegram-qr.png)
+* Or simply text SUBSCRIBE to **+1-833-942-4941** to sign up for the SMS notification list.
+
+  ![QR code shortcut for +18339424941](images/sms-qr.png)
+  * Your number will never be bought or sold or used for any other purpose.
+  * [CTIA](https://www.ctia.org/about-ctia/our-mission/) Compliance Statement: By texting SUBSCRIBE, you agree to receive informational messages sent via an autodialer, and this agreement isn't a condition of any purchase. Carrier message and data rates may apply.
+  * Text STOP to unsubscribe at any time.
 
 ## Questions and Answers
 
 ### Why does this matter?
-
-> "Keeping your software up to date is one of the most important things you can do to maintain your Apple product's security." -- [Apple](https://support.apple.com/en-us/HT201222)
+> "Keeping your software up to date is one of the most important things you can do to maintain your Apple product's security." — [Apple](https://support.apple.com/en-us/HT201222)
 
 Almost every new iOS release includes critical bug fixes for a variety of security vulnerabilities, but **iOS doesn't tell you when a new update is available.**
 
@@ -46,11 +63,13 @@ Here are a few examples where automatic updates sometimes don't work very well u
 * **You recently flew through the air on a work trip or dream vacation.**
   * The concept of "overnight" isn't always compatible with time zones (or adventure).
 
-### How quickly are automatic updates applied under perfect conditions?
+### How do the people in Cupertino describe this process?
 
-Apple regularly publishes detailed revisions to their [Apple Platform Security documentation](https://support.apple.com/guide/security/welcome/web), but even though the subject of "Automatic Updates" seems highly relevant to this topic, that phrase is only mentioned twice overall — and only once in the context of iOS in Apple's [latest PDF guide](https://manuals.info.apple.com/MANUALS/1000/MA1902/en_US/apple-platform-security-guide.pdf) that spans more than 210 pages (as of April 2022).
+Apple regularly publishes detailed revisions to their [Apple Platform Security documentation](https://support.apple.com/guide/security/welcome/web), but even though the subject of "Automatic Updates" seems highly relevant to this topic, that phrase is only mentioned twice overall — and only once in the context of iOS in Apple's [latest PDF guide](https://manuals.info.apple.com/MANUALS/1000/MA1902/en_US/apple-platform-security-guide.pdf) that spans more than 210 pages (as of May 2022).
 
 Very few details are provided. Dedicated readers can learn a few fascinating facts about the "Escrow keybag" where automatic updates are briefly mentioned, but there's nothing about when and how update checks are performed, or what protections (if any) are in place to ensure that users will eventually find out about available updates with critical security fixes.
+
+### How quickly are automatic updates applied under perfect conditions?
 
 Even with the ideal combination of flawless WiFi, an uninterrupted connection to power, and a stable "overnight" situation, automatic updates can still take quite a while. A [popular thread on Reddit](https://www.reddit.com/r/ios/comments/trj7c1/craig_federighis_response_to_question_about_ios/) was started after Apple's Senior Vice President of Software Engineering purportedly responded to an email inquiry that was sent on behalf of Apple users who were confused about how Automatic Updates were supposed to work.
 
@@ -78,4 +97,4 @@ When it comes to installing security-related bug fixes and updates, faster is al
 
 ## Legal
 
-All trademarks are property of their respective trademark holders. Not affiliated with Apple.
+All trademarks are property of their respective trademark holders. This project is not affiliated with Apple.
