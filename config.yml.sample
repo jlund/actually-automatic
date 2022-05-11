@@ -117,7 +117,7 @@ telegram:
     - "@secondexamplechannel"
 
 
-# Twilio (https://www.twilio.com/)
+# Twilio (https://www.twilio.com/sms)
 twilio_sms:
   enabled: no
 
