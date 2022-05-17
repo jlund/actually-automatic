@@ -133,6 +133,7 @@ module UpdateNotifier
     end
 
     def pmv
+      # https://developer.apple.com/business/documentation/MDM-Protocol-Reference.pdf#86
       @response ||= HTTParty.get("https://gdmf.apple.com/v2/pmv", { ssl_ca_file: "#{__dir__}/ca/apple.pem", headers: {"User-Agent" => "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:98.0) Gecko/20100101 Firefox/98.0"} })
       JSON.parse(@response.body)['PublicAssetSets']['iOS']
     end
