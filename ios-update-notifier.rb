@@ -174,7 +174,7 @@ module UpdateNotifier
     end
 
     def update_last_seen(version_number)
-        File.write(last_seen_file, version_number)
+      File.write(last_seen_file, version_number)
     end
 
     def self.exit_on_failure?
