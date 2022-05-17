@@ -1,7 +1,7 @@
 module UpdateNotifier
   class Slack
     def self.notify(notification_message, config)
-      request_headers = { "Content-Type"  => "application/json" }
+      request_headers = { "Content-Type" => "application/json" }
       request_body    = { text: notification_message }
 
       config['webhook_urls'].each do |url|
