@@ -53,7 +53,7 @@ module UpdateNotifier
       show_release = highest_version(pmv)
 
       say("Latest iOS release information:", :green)
-      puts "  iOS #{show_release['ProductVersion']}"
+      puts "  Version:  #{show_release['ProductVersion']}"
       puts "  Released: #{show_release['PostingDate']}"
       puts "  Expires:  #{show_release['ExpirationDate']}"
       puts "  Link:     #{security_link(show_release['ProductVersion'])}"
