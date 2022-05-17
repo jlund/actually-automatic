@@ -5,7 +5,7 @@ The "Automatic Updates" feature in iOS is slow and unpredictable. Get notified w
 
 **Supported services:**
 * [Discord](https://discord.com/)
-* Email ([SMTP](https://en.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol))
+* [Email](https://en.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol)
 * [Signal](https://signal.org/)
 * [Slack](https://slack.com/)
 * [SMS](https://en.wikipedia.org/wiki/SMS)
@@ -75,7 +75,7 @@ Even with the ideal combination of flawless WiFi, an uninterrupted connection to
 
 The reply from [Craig Federighi](https://www.apple.com/leadership/craig-federighi/) (which exists in the form of a screenshot, not in any official documentation) states that iOS updates are rolled out incrementally and that automatic updates begin "1-4 weeks later (after we've received feedback on the update)."
 
-For users and organizations who care about security, "1-4 weeks later" could feel approximately 1-4 weeks too late.
+For users and organizations who care about security, "1-4 weeks later" could feel approximately 1-4 weeks late.
 
 ### Shouldn't people be given the option to get notified about new updates right away?
 
@@ -94,6 +94,10 @@ It's difficult to fix something without also revealing what's broken. Within mom
 Similarly, any attackers who already knew about the vulnerability previously had a reason to be judicious and careful in how they used it. They wanted the vulnerability to remain secret so that Apple wouldn't fix it. However, now they may instead be motivated to race against the update and try to compromise as many devices as possible before the window for exploiting this previously hidden vulnerability has completely closed. 
 
 When it comes to installing security-related bug fixes and updates, faster is always better.
+
+### Can you help me scroll back up to the instructions so that I can stop living in the dark?
+
+[Yes](#the-easy-way-or-the-easier-way).
 
 ## Legal
 
