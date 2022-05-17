@@ -1,17 +1,11 @@
 # Actually Automatic
-## Automatic iOS update notifications that actually work 🤯
+**Automatic iOS update notifications that actually work 🤯**
 
-The "Automatic Updates" feature in iOS is slow and unpredictable. Get notified whenever Apple releases a new iOS update, and start installing the latest security fixes and new features without the wait!
+The "Automatic Updates" feature in iOS is slow and unpredictable. Get notified whenever Apple releases a new iOS update, and start installing the latest security fixes and fresh features without the wait!
 
-**Supported services:**
-* [Discord](https://discord.com/)
-* [Email](https://en.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol)
-* [Signal](https://signal.org/)
-* [Slack](https://slack.com/)
-* [SMS](https://en.wikipedia.org/wiki/SMS)
-  * [SimpleTexting](https://simpletexting.com/)
-  * [Twilio](https://www.twilio.com/sms)
-* [Telegram](https://telegram.org/)
+![Screenshot of a sample Discord notification: "Apple has released iOS 15.5."](images/discord-screenshot.png)
+
+**Supported services:** [Discord](https://discord.com/), [Email](https://en.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol), [Signal](https://signal.org/), [Slack](https://slack.com/), [SMS](https://en.wikipedia.org/wiki/SMS) (via [SimpleTexting](https://simpletexting.com/) and [Twilio](https://www.twilio.com/sms)), and [Telegram](https://telegram.org/).
 
 ## The Easy Way or the Easier Way
 
