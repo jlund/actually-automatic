@@ -130,3 +130,18 @@ twilio_sms:
   recipients:
     - +18015551234
     - +18015555678
+
+
+# Twitter (https://twitter.com)
+twitter:
+  enabled: no
+
+  # Sign up for Twitter API access here:
+  #   https://developer.twitter.com/en/docs/twitter-api
+  #
+  # Visit the "Keys and tokens" tab on your new app's settings page to
+  # generate the necessary credentials.
+  consumer_key: AZZZZZZZZZZZZZZZZZZZZZZZZ
+  consumer_secret: AZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+  access_token: 12222222222222222222222222222222222222222222222222
+  access_token_secret: xzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz

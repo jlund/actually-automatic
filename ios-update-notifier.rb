@@ -11,9 +11,10 @@ require_relative 'lib/discord.rb'
 require_relative 'lib/signal.rb'
 require_relative 'lib/simpletexting-sms.rb'
 require_relative 'lib/slack.rb'
+require_relative 'lib/smtp.rb'
 require_relative 'lib/telegram.rb'
 require_relative 'lib/twilio-sms.rb'
-require_relative 'lib/smtp.rb'
+require_relative 'lib/twitter.rb'
 
 module UpdateNotifier
   class CLI < Thor
@@ -79,6 +80,7 @@ module UpdateNotifier
       puts "  - SMS (Twilio)"        if service_is_enabled?('twilio_sms')
       puts "  - SMTP"                if service_is_enabled?('smtp')
       puts "  - Telegram"            if service_is_enabled?('telegram')
+      puts "  - Twitter"             if service_is_enabled?('twitter')
 
       say("\nTest message:", :green)
       puts "  #{test_message}\n\n"
@@ -161,6 +163,7 @@ module UpdateNotifier
       UpdateNotifier::SMTP.notify(notification_text, config['smtp']) if service_is_enabled?('smtp')
       UpdateNotifier::Telegram.notify(notification_text, config['telegram']) if service_is_enabled?('telegram')
       UpdateNotifier::TwilioSMS.notify(notification_text, config['twilio_sms']) if service_is_enabled?('twilio_sms')
+      UpdateNotifier::Twitter.notify(notification_text, config['twitter']) if service_is_enabled?('twitter')
     end
 
     def service_is_enabled?(service)
