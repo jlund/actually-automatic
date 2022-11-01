@@ -40,7 +40,7 @@ module UpdateNotifier
         puts "New update found: #{latest_update['ProductVersion']} (#{latest_update['PostingDate']}) -- Sending notifications."
 
         config['notification_text'].gsub!('$VERSION', latest_update['ProductVersion'])
-        config['notification_text'].gsub!('$LINK',    security_link(latest_update['ProductVersion']))
+        config['notification_text'].gsub!('$LINK',    security_link('iOS', latest_update['ProductVersion']))
 
         send_notifications(config['notification_text'])
         update_last_seen(latest_update['ProductVersion'])
@@ -49,17 +49,10 @@ module UpdateNotifier
       File.write("#{__dir__}/LAST_RUN", DateTime.now)
     end
 
-    desc "show", "Show information about the latest iOS release."
+    desc "show", "Show information about the latest macOS and iOS releases."
     def show
-      show_release = highest_version(pmv)
-
-      say("Latest iOS release information:", :green)
-      puts "  Version:  #{show_release['ProductVersion']}"
-      puts "  Released: #{show_release['PostingDate']}"
-      puts "  Expires:  #{show_release['ExpirationDate']}"
-      puts "  Link:     #{security_link(show_release['ProductVersion'])}"
-      puts "  Supported devices (#{show_release['SupportedDevices'].size}):"
-      puts "    #{show_release['SupportedDevices']}"
+      show_release('macOS')
+      show_release('iOS')
     end
 
     desc "test", "Send a test message to verify that notifications are configured correctly."
@@ -116,7 +109,7 @@ module UpdateNotifier
         return Gem::Version.new(File.read(last_seen_file))
       else
         say("First run! Creating a new `LAST_SEEN` file.", :green)
-        latest_version_number = highest_version(pmv)['ProductVersion']
+        latest_version_number = highest_version(pmv('iOS'))['ProductVersion']
 
         update_last_seen(latest_version_number)
         return Gem::Version.new(latest_version_number)
@@ -128,25 +121,34 @@ module UpdateNotifier
     end
 
     def new_updates
-      pmv.select do |k, v|
+      pmv('iOS').select do |k, v|
         Gem::Version.new(k['ProductVersion']) > last_seen &&
         k['SupportedDevices'].any? { |v| v.start_with?("iPhone") }
       end
     end
 
-    def pmv
+    def pmv(platform)
       # https://developer.apple.com/business/documentation/MDM-Protocol-Reference.pdf#86
       @response ||= HTTParty.get("https://gdmf.apple.com/v2/pmv", { ssl_ca_file: "#{__dir__}/ca/apple.pem", headers: {"User-Agent" => "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:106.0) Gecko/20100101 Firefox/106.0"} })
-      JSON.parse(@response.body)['PublicAssetSets']['iOS']
+      JSON.parse(@response.body)['PublicAssetSets'][platform]
     end
 
-    def security_link(version)
+    def security_link(platform, version)
       security_index_url  = "https://support.apple.com/en-us/HT201222"
       security_index_html = HTTParty.get(security_index_url).body
 
       doc = Nokogiri::HTML(security_index_html)
 
-      version_link = doc.at("a[text()^='iOS #{version}']")
+      # Apple omits the trailing '.0' in link text for new major versions
+      if version.end_with?('.0')
+        version.delete!('.0')
+      end
+
+      if platform == 'iOS'
+        version_link = doc.at("a[text()^='iOS #{version}']")
+      elsif platform == 'macOS'
+        version_link = doc.search("a[text()^='macOS']").select { |link| link.text.end_with?(version) }[0]
+      end
 
       if version_link.nil?
         return security_index_url
@@ -174,6 +176,18 @@ module UpdateNotifier
       else
         return config[service]['enabled']
       end
+    end
+
+    def show_release(platform)
+      latest = highest_version(pmv(platform))
+
+      say("Latest #{platform} release information:", :green)
+      puts "  Version:  #{latest['ProductVersion']}"
+      puts "  Released: #{latest['PostingDate']}"
+      puts "  Expires:  #{latest['ExpirationDate']}"
+      puts "  Link:     #{security_link(platform, latest['ProductVersion'])}"
+      puts "  Supported devices (#{latest['SupportedDevices'].size}):"
+      puts "    #{latest['SupportedDevices']}"
     end
 
     def update_last_seen(version_number)
