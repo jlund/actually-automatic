@@ -1,7 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    faraday (1.10.0)
+    faraday (1.10.2)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
       faraday-excon (~> 1.1)
@@ -17,8 +17,8 @@ GEM
     faraday-em_synchrony (1.0.0)
     faraday-excon (1.1.0)
     faraday-httpclient (1.0.1)
-    faraday-multipart (1.0.3)
-      multipart-post (>= 1.2, < 3)
+    faraday-multipart (1.0.4)
+      multipart-post (~> 2)
     faraday-net_http (1.0.1)
     faraday-net_http_persistent (1.2.0)
     faraday-patron (1.0.0)
@@ -34,8 +34,8 @@ GEM
     mime-types-data (3.2022.0105)
     mini_portile2 (2.8.0)
     multi_xml (0.6.0)
-    multipart-post (2.2.0)
-    nokogiri (1.13.6)
+    multipart-post (2.2.3)
+    nokogiri (1.13.9)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     racc (1.6.0)
@@ -57,4 +57,4 @@ DEPENDENCIES
   tweetkit
 
 BUNDLED WITH
-   2.1.4
+   2.3.5
