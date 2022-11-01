@@ -19,40 +19,37 @@ require_relative 'lib/twitter.rb'
 module UpdateNotifier
   class CLI < Thor
 
-    desc "notify", "Send a notification if a new iOS update has been released since the last update was seen."
+    desc "notify (--ios) (--macos)", "Send a notification if new updates for the specified platforms have been released since the last updates were seen."
     long_desc <<-LONGDESC
-      When the command is run for the first time, a new `LAST_SEEN` file is created
-      to store the version number of the latest iOS release. Notifications are only
-      sent if a new release is discovered with a version number that is larger than
-      the latest value in the `LAST_SEEN` file.
+      When the command is run for the first time, new `LAST_SEEN_*` files are created
+      to store the version numbers of the latest macOS and iOS releases. Notifications
+      are only sent if new releases are discovered with version numbers that are larger
+      than the latest values in the `LAST_SEEN_*` files.
 
       As a result (and by design) the initial run will never trigger notifications.
 
-      During subsequent runs, notifications are sent and the `LAST_SEEN` value is
-      updated whenever a new version is detected.
+      During subsequent runs, notifications are sent and the `LAST_SEEN_*` values are
+      updated whenever new versions are detected.
     LONGDESC
+    option :ios,   type: :boolean
+    option :macos, type: :boolean
     def notify
-      latest_update = highest_version(new_updates)
-
-      if latest_update.nil?
-        puts "No new updates found."
-      else
-        puts "New update found: #{latest_update['ProductVersion']} (#{latest_update['PostingDate']}) -- Sending notifications."
-
-        config['notification_text'].gsub!('$VERSION', latest_update['ProductVersion'])
-        config['notification_text'].gsub!('$LINK',    security_link('iOS', latest_update['ProductVersion']))
-
-        send_notifications(config['notification_text'])
-        update_last_seen(latest_update['ProductVersion'])
+      unless options[:macos] || options[:ios]
+        say("No platforms selected!", :red)
+        puts "Please specify `--ios` and/or `--macos`."
+        exit(false)
       end
+
+      latest_update_notification('iOS')   if options[:ios]
+      latest_update_notification('macOS') if options[:macos]
 
       File.write("#{__dir__}/LAST_RUN", DateTime.now)
     end
 
-    desc "show", "Show information about the latest macOS and iOS releases."
+    desc "show", "Show information about the latest iOS and macOS releases."
     def show
-      show_release('macOS')
       show_release('iOS')
+      show_release('macOS')
     end
 
     desc "test", "Send a test message to verify that notifications are configured correctly."
@@ -104,26 +101,53 @@ module UpdateNotifier
       versions.max_by { |v| Gem::Version.new(v['ProductVersion']) }
     end
 
-    def last_seen
-      if File.exists?(last_seen_file)
-        return Gem::Version.new(File.read(last_seen_file))
+    def last_seen(platform)
+      if File.exists?(last_seen_file(platform))
+        return Gem::Version.new(File.read(last_seen_file(platform)))
       else
-        say("First run! Creating a new `LAST_SEEN` file.", :green)
-        latest_version_number = highest_version(pmv('iOS'))['ProductVersion']
+        say("First run! Creating a new `LAST_SEEN_#{platform.upcase}` file for #{platform}.", :green)
+        latest_version_number = highest_version(pmv(platform))['ProductVersion']
 
-        update_last_seen(latest_version_number)
+        update_last_seen(platform, latest_version_number)
         return Gem::Version.new(latest_version_number)
       end
     end
 
-    def last_seen_file
-      "#{__dir__}/LAST_SEEN"
+    def last_seen_file(platform)
+      "#{__dir__}/LAST_SEEN_#{platform.upcase}"
     end
 
-    def new_updates
-      pmv('iOS').select do |k, v|
-        Gem::Version.new(k['ProductVersion']) > last_seen &&
-        k['SupportedDevices'].any? { |v| v.start_with?("iPhone") }
+    def latest_update_notification(platform)
+      latest_update = highest_version(new_updates(platform))
+
+      if latest_update.nil?
+        puts "No new #{platform} updates found."
+      else
+        puts "New #{platform} update found: #{latest_update['ProductVersion']} (#{latest_update['PostingDate']}) -- Sending notifications."
+
+        notification_text = config['notification_text'].dup
+
+        notification_text.gsub!('$PLATFORM', platform)
+        notification_text.gsub!('$VERSION',  latest_update['ProductVersion'])
+        notification_text.gsub!('$LINK',     security_link(platform, latest_update['ProductVersion']))
+
+        send_notifications(notification_text)
+        update_last_seen(platform, latest_update['ProductVersion'])
+      end
+    end
+
+    def new_updates(platform)
+      platform_updates = pmv(platform).select do |k, v|
+        Gem::Version.new(k['ProductVersion']) > last_seen(platform)
+      end
+
+      if platform == 'iOS'
+        platform_updates.select do |k, v|
+          # Filter out tvOS and watchOS releases
+          k['SupportedDevices'].any? { |v| v.start_with?("iPhone") }
+        end
+      elsif platform == 'macOS'
+        platform_updates
       end
     end
 
@@ -134,10 +158,10 @@ module UpdateNotifier
     end
 
     def security_link(platform, version)
-      security_index_url  = "https://support.apple.com/en-us/HT201222"
-      security_index_html = HTTParty.get(security_index_url).body
+      security_index_url = "https://support.apple.com/en-us/HT201222"
+      @security_index_html ||= HTTParty.get(security_index_url).body
 
-      doc = Nokogiri::HTML(security_index_html)
+      doc = Nokogiri::HTML(@security_index_html)
 
       # Apple omits the trailing '.0' in link text for new major versions
       if version.end_with?('.0')
@@ -147,7 +171,7 @@ module UpdateNotifier
       if platform == 'iOS'
         version_link = doc.at("a[text()^='iOS #{version}']")
       elsif platform == 'macOS'
-        version_link = doc.search("a[text()^='macOS']").select { |link| link.text.end_with?(version) }[0]
+        version_link = doc.search("a[text()^='macOS']").select { |link| link.text.end_with?(version) }.first
       end
 
       if version_link.nil?
@@ -190,8 +214,8 @@ module UpdateNotifier
       puts "    #{latest['SupportedDevices']}"
     end
 
-    def update_last_seen(version_number)
-      File.write(last_seen_file, version_number)
+    def update_last_seen(platform, version_number)
+      File.write(last_seen_file(platform), version_number)
     end
 
     def self.exit_on_failure?

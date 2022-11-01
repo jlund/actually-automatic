@@ -1,17 +1,19 @@
-# You can customize outbound notifications using these two variables:
+# You can customize outbound notifications using these three variables:
 #
-# * `$VERSION` will be replaced with the relevant iOS version number.
+# * `$PLATFORM` will be replaced with "macOS" or "iOS".
+#
+# * `$VERSION` will be replaced with the relevant version number.
 #
 # * `$LINK` will be replaced with a link to the security content page
-#   for the relevant iOS version number. If a link for that specific
-#   version can't be found or hasn't been posted yet, `$LINK` will be
-#   replaced with the default Apple URL for security information:
+#   for the relevant macOS or iOS version number. If a link for that
+#   specific version can't be found or hasn't been posted yet, `$LINK`
+#   defaults to the generic Apple URL for security information:
 #     https://support.apple.com/en-us/HT201222
 #
 # Keeping the notification text short is highly recommended, especially
 # when SMS providers are enabled.
 notification_text: |
-  Apple has released iOS $VERSION.
+  Apple has released $PLATFORM $VERSION.
 
   $LINK
 
