@@ -5,16 +5,14 @@ The "Automatic Updates" feature in iOS is slow and unpredictable. Get notified w
 
 ![Screenshot of a sample Discord notification: "Apple has released iOS 15.5."](images/discord-screenshot.png)
 
-**Supported services:** [Discord](https://discord.com/), [Email](https://en.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol), [Signal](https://signal.org/), [Slack](https://slack.com/), [SMS](https://en.wikipedia.org/wiki/SMS) (via [SimpleTexting](https://simpletexting.com/) and [Twilio](https://www.twilio.com/sms)), [Telegram](https://telegram.org/) and [Twitter](https://twitter.com/).
+**Supported services:** [Discord](https://discord.com/), [Email](https://en.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol), [Signal](https://signal.org/), [Slack](https://slack.com/), [SMS](https://en.wikipedia.org/wiki/SMS) (via [SimpleTexting](https://simpletexting.com/) and [Twilio](https://www.twilio.com/sms)), and [Telegram](https://telegram.org/).
 
 ## The Easy Way or the Easier Way
 
 You can follow the self-hosting [setup instructions](SETUP.md) to send custom notifications about new iOS updates from your own server.
 
-To make things even easier, the Actually Automatic project maintains a few free notification options that are powered by the same open source program — no setup necessary!
+To make things even easier, the Actually Automatic project maintains a couple of free notification options that are powered by the same open source program — no setup necessary!
 
-* Follow [@NewiOSUpdates](https://twitter.com/NewiOSUpdates) on Twitter.
-  * To enable push notifications, visit the [@NewiOSUpdates profile page](https://twitter.com/NewiOSUpdates), tap the notification 🔔 icon, and select "All Tweets."
 * Join the [@SoftwareUpdates](https://t.me/SoftwareUpdates) channel on Telegram.
 
   ![QR code shortcut for @SoftwareUpdates on Telegram](images/telegram-qr.png)
