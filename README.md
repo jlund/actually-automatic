@@ -1,7 +1,9 @@
 # Actually Automatic
-**Automatic iOS update notifications that actually work 🤯**
+**Automatic iOS and macOS update notifications that actually work 🤯**
 
-The "Automatic Updates" feature in iOS is slow and unpredictable. Get notified whenever Apple releases a new iOS update, and start installing the latest security fixes and fresh features without the wait!
+The "Automatic Updates" feature in iOS and macOS can be slow and unpredictable.
+
+Now you can quickly get notified whenever Apple releases a new [software update](https://support.apple.com/en-us/HT201222) or [Rapid Security Response](https://support.apple.com/en-us/HT201224).
 
 ![Screenshot of a sample Discord notification: "Apple has released iOS 15.5."](images/discord-screenshot.png)
 
@@ -9,9 +11,9 @@ The "Automatic Updates" feature in iOS is slow and unpredictable. Get notified w
 
 ## The Easy Way or the Easier Way
 
-You can follow the self-hosting [setup instructions](SETUP.md) to send custom notifications about new iOS updates from your own server.
+Follow the self-hosting [setup instructions](SETUP.md) to send custom notifications about new software updates and Rapid Security Responses from your own server.
 
-To make things even easier, the Actually Automatic project maintains a couple of free notification options that are powered by the same open source program — no setup necessary!
+To make things even easier, the project maintains a couple of free notification options that are powered by the same open source program — no setup necessary!
 
 * Join the [@SoftwareUpdates](https://t.me/SoftwareUpdates) channel on Telegram.
 
@@ -28,15 +30,17 @@ To make things even easier, the Actually Automatic project maintains a couple of
 ### Why does this matter?
 > "Keeping your software up to date is one of the most important things you can do to maintain your Apple product's security." — [Apple](https://support.apple.com/en-us/HT201222)
 
-Almost every new iOS release includes critical bug fixes for a variety of security vulnerabilities, but **iOS doesn't tell you when a new update is available.**
+Almost every new software update includes critical bug fixes for a variety of security vulnerabilities. [Rapid Security Responses](https://support.apple.com/en-us/HT201224) include fixes for "issues that might have been exploited or reported to exist 'in the wild.'"
+
+However, iOS and macOS don't immediately tell you when a new update or Rapid Security Response is available.
 
 This project's goal is to help close that gap.
 
-### Wait, aren't iOS updates automatic?
+### Wait, aren't software updates automatic?
 
 Sort of. Slowly. Sometimes.
 
-If Automatic Updates are enabled (`Settings > General > Software Update > Automatic Updates`), your iPhone *might* download and install the new iOS update several days or weeks later — but only if all of the following conditions are true:
+If Automatic Updates are enabled (`Settings > General > Software Update > Automatic Updates`), your device *might* download and install a new update several days or weeks later — but only if all of the following conditions are true:
 
 1. It's plugged in or resting on a wireless charger.
 2. It's connected to WiFi.
@@ -50,7 +54,7 @@ Here are a few examples where automatic updates sometimes don't work very well u
 * **No WiFi.**
   * No automatic updates.
 * **Annoying captive-portal WiFi.**
-  * Unless you really commit to repeatedly filling out those tiny forms that ask for your last name and hotel room number every couple of hours, it's possible that you won't be connected to WiFi during the pivotal and opaque moment when iOS decides to check for and download an update.
+  * Unless you really commit to repeatedly filling out those tiny forms that ask for your last name and hotel room number every couple of hours, it's possible that you won't be connected to WiFi during the pivotal and opaque moment when your device decides to check for and download an update.
 * **You have the audacity to charge your phone during the day or in your own car.**
   * There's no need to plug in your phone again at home if it's already fully charged.
   * You probably don't have WiFi in your car.
@@ -71,21 +75,17 @@ The reply from [Craig Federighi](https://www.apple.com/leadership/craig-federigh
 
 For users and organizations who care about security, "1-4 weeks later" could feel approximately 1-4 weeks late.
 
-### Shouldn't people be given the option to get notified about new updates right away?
+### Don't Rapid Security Responses significantly improve the situation?
 
-A staged roll-out strategy (that can take up to 4 weeks!) might make a bit of sense when introducing new features. Let the enthusiasts who habitually check for updates in the Settings app kick the tires first, and then start a full-scale roll-out after responding to their feedback and making any necessary adjustments.
+Yes! It's fantastic that Apple added this functionality and that they are beginning to use it (as of May 2023).
 
-The problem, of course, is that Apple oftentimes deploys fixes for critical security vulnerabilities right alongside new features in the same release. A month-long staged roll-out process arguably doesn't make much sense for a security fix that could help protect millions of users and their data.
-
-Apple could easily add an additional toggle to the existing Automatic Updates settings page (e.g. "Notify When Available") and this entire project would no longer be necessary.
-
-Hopefully they will do that someday.
+Some organizations and individuals may still prefer to get notified right away when a Rapid Security Response update is available, instead of waiting for it to be automatically applied (maybe) at some point in the future.
 
 ### Does quickly installing updates really matter?
 
-It's difficult to fix something without also revealing what's broken. Within moments of any new iOS release, people all over the world start closely examining the changes. Some of those people are not good people, and some of them learn about new vulnerabilities that they can start exploiting right away before the update has been widely deployed.
+It's difficult to fix something without also revealing what's broken. Within moments of any new software update or Rapid Security Response, people all over the world start closely examining the changes. Some of those people are not good people, and some of them learn about new vulnerabilities that they can start exploiting right away before the update has been widely deployed.
 
-Similarly, any attackers who already knew about the vulnerability previously had a reason to be judicious and careful in how they used it. They wanted the vulnerability to remain secret so that Apple wouldn't fix it. However, now they may instead be motivated to race against the update and try to compromise as many devices as possible before the window for exploiting this previously hidden vulnerability has completely closed. 
+Similarly, any attackers who already knew about the vulnerability previously had a reason to be judicious and careful in how they used it. They wanted the vulnerability to remain secret so that Apple wouldn't fix it. Once it becomes public, they may instead be motivated to race against the update and try to compromise as many devices as possible before the window for exploiting this previously hidden vulnerability has completely closed. 
 
 When it comes to installing security-related bug fixes and updates, faster is always better.
 
