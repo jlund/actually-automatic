@@ -56,14 +56,14 @@ simpletexting_sms:
   account_phone: 8885551234
   api_key: 111XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-  # Every iOS release notification is sent as a SimpleTexting "campaign."
+  # Every release notification is sent as a SimpleTexting "campaign."
   # The campaign title prefix is used to generate the campaign name that
   # will appear in the Campaigns section of the SimpleTexting admin
-  # interface, e.g., `iOS Update Notification 2022-04-16`.
+  # interface, e.g., `Software Update Notification 2022-04-16`.
   #
   # The campaign title prefix won't be displayed anywhere else and it's
   # not part of the notification text that list subscribers will receive.
-  campaign_title_prefix: "iOS Update Notification"
+  campaign_title_prefix: "Software Update Notification"
 
   # The unsubscribe text appears at the end of every update
   unsubscribe_text: "Reply STOP to unsubscribe."
@@ -99,7 +99,7 @@ smtp:
   # authentication, this can remain set to localhost.
   helo_domain: localhost
 
-  subject: A new iOS update is available!
+  subject: A new software update is available!
 
   from_email: Sender Name <sender.name@example.com>
   bcc_recipients:
