@@ -1,7 +1,7 @@
 module UpdateNotifier
   class SimpleTextingSMS
     def self.notify(notification_message, config)
-      campaign_title = config['campaign_title_prefix'].concat(" ", Date.today.to_s)
+      campaign_title = config['campaign_title_prefix'].concat(" ", Time.now.strftime("%Y-%m-%d %H:%M:%S.%L"))
 
       request_headers = {
         "Authorization" => "Bearer #{config['api_key']}",

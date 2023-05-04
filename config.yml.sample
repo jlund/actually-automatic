@@ -59,17 +59,17 @@ simpletexting_sms:
   # Every release notification is sent as a SimpleTexting "campaign."
   # The campaign title prefix is used to generate the campaign name that
   # will appear in the Campaigns section of the SimpleTexting admin
-  # interface, e.g., `Software Update Notification 2022-04-16`.
+  # interface, e.g., `Apple Update Notification 2023-05-04 14:11:29.378`.
   #
   # The campaign title prefix won't be displayed anywhere else and it's
   # not part of the notification text that list subscribers will receive.
-  campaign_title_prefix: "Software Update Notification"
+  campaign_title_prefix: "Apple Update Notification"
 
   # The unsubscribe text appears at the end of every update
   unsubscribe_text: "Reply STOP to unsubscribe."
 
   list_ids:
-    - ios-update-subscribers
+    - software-update-subscribers
     - another-example-list
 
 
