@@ -44,6 +44,9 @@ signal:
   # Phone number that was registered and verified with `signal-cli`.
   account_phone: "+18015551234"
 
+  groups:
+    - some-group-id
+
   recipients:
     - +18015551234
     - +18015555678
