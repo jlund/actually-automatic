@@ -85,34 +85,35 @@ module UpdateNotifier
     end
 
     def security_link(version)
-      # TODO It's unclear how (or if) Apple will post update information
-      # or release notes for Rapid Security Responses. They didn't for
-      # the first release, but this logic should be revisited after
-      # there have been more.
+      rapid_index_url     = "https://support.apple.com/en-us/HT201224"
+      security_index_url  = "https://support.apple.com/en-us/HT201222"
+      security_index_html = HTTParty.get(security_index_url).body
+
+      doc = Nokogiri::HTML(security_index_html)
+
+      # Apple omits the trailing '.0' in link text for new major versions
+      if version.end_with?(".0")
+        version.delete!(".0")
+      end
+
       if rapid_channel?
-        "https://support.apple.com/en-us/HT201224"
-      else
-        security_index_url = "https://support.apple.com/en-us/HT201222"
-        @security_index_html ||= HTTParty.get(security_index_url).body
-
-        doc = Nokogiri::HTML(@security_index_html)
-
-        # Apple omits the trailing '.0' in link text for new major versions
-        if version.end_with?(".0")
-          version.delete!(".0")
+        rsr_search_results = doc.search("a[text()^='Rapid Security Response']").select do |link|
+          link.text.include?(platform) && link.text.end_with?(version)
         end
 
+        version_link = rsr_search_results.first
+      else
         if platform == "iOS"
           version_link = doc.at("a[text()^='iOS #{version}']")
         elsif platform == "macOS"
           version_link = doc.search("a[text()^='macOS']").select { |link| link.text.end_with?(version) }.first
         end
+      end
 
-        if version_link.nil?
-          security_index_url
-        else
-          version_link[:href]
-        end
+      if version_link.nil?
+        rapid_channel? ? rapid_index_url : security_index_url
+      else
+        version_link[:href]
       end
     end
 
@@ -135,7 +136,7 @@ module UpdateNotifier
         cli = UpdateNotifier::CLI.new
         notification_text = cli.config["notification_text"].dup
         notification_text.gsub!("$PLATFORM", platform)
-        notification_text.gsub!("$LINK",     security_link(latest_update["ProductVersion"]))
+        notification_text.gsub!("$LINK",     security_link(latest_version))
         notification_text.gsub!("$VERSION",  latest_version)
         cli.send_notifications(notification_text)
       end
