@@ -84,8 +84,8 @@ module UpdateNotifier
     end
 
     def security_link(version)
-      rapid_index_url     = "https://support.apple.com/en-us/HT201224"
-      security_index_url  = "https://support.apple.com/en-us/HT201222"
+      rapid_index_url     = "https://support.apple.com/en-us/102657"
+      security_index_url  = "https://support.apple.com/en-us/100100"
       security_index_html = HTTParty.get(security_index_url).body
 
       doc = Nokogiri::HTML(security_index_html)
