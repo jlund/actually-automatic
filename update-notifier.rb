@@ -101,7 +101,7 @@ module UpdateNotifier
       def config
         config_file = "#{__dir__}/config.yml"
 
-        if File.exists?(config_file)
+        if File.exist?(config_file)
           @config ||= YAML.load_file(config_file)
         else
           say("No config file found!", :red)
@@ -148,15 +148,19 @@ module UpdateNotifier
       release_channel = UpdateNotifier::Channel.new(channel, platform, pmv)
       latest          = release_channel.highest_version(release_channel.pmv)
 
-      latest_version_number = release_channel.version_number(latest)
+      if latest.nil?
+        say("No recent updates for #{platform} in the #{channel} channel.", :bold)
+      else
+        latest_version_number = release_channel.version_number(latest)
 
-      say("Platform: #{platform} | Channel: #{channel}", :bold)
-      puts "  Version:  #{latest_version_number}"
-      puts "  Released: #{latest["PostingDate"]}"
-      puts "  Expires:  #{latest["ExpirationDate"]}"
-      puts "  Link:     #{release_channel.security_link(latest_version_number)}"
-      puts "  Supported devices (#{latest["SupportedDevices"].size}):"
-      puts "    #{latest["SupportedDevices"]}\n\n"
+        say("Platform: #{platform} | Channel: #{channel}", :bold)
+        puts "  Version:  #{latest_version_number}"
+        puts "  Released: #{latest["PostingDate"]}"
+        puts "  Expires:  #{latest["ExpirationDate"]}"
+        puts "  Link:     #{release_channel.security_link(latest_version_number)}"
+        puts "  Supported devices (#{latest["SupportedDevices"].size}):"
+        puts "    #{latest["SupportedDevices"]}\n\n"
+      end
     end
 
   end

@@ -5,7 +5,10 @@ module UpdateNotifier
     def initialize(channel, platform, pmv)
       @channel = channel
       @platform = platform
-      @pmv = pmv[channel][platform]
+
+      # If Apple hasn't released any recent Rapid Security Responses,
+      # the relevant JSON will be empty.
+      @pmv = pmv[channel][platform].nil? ? Array.new : pmv[channel][platform]
     end
 
     def highest_version(versions)
@@ -27,7 +30,7 @@ module UpdateNotifier
     end
 
     def last_seen
-      if File.exists?(last_seen_file)
+      if File.exist?(last_seen_file)
         File.read(last_seen_file)
       else
         puts "First run! Creating `#{last_seen_file}` to track #{platform} updates on Apple's '#{channel}' channel."
@@ -50,7 +53,7 @@ module UpdateNotifier
     end
 
     def new_updates
-      if rapid_channel?
+      if rapid_channel? && !last_seen.nil?
         version_split = last_seen.split(" ")
 
         last_seen_version = version_split[0]
@@ -139,10 +142,12 @@ module UpdateNotifier
     end
 
     def version_number(update)
-      if rapid_channel?
-        "#{update["ProductVersion"]} #{update["ProductVersionExtra"]}"
-      else
-        update["ProductVersion"]
+      unless update.nil?
+        if rapid_channel?
+          "#{update["ProductVersion"]} #{update["ProductVersionExtra"]}"
+        else
+          update["ProductVersion"]
+        end
       end
     end
 
