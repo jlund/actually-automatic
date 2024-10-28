@@ -32,11 +32,7 @@ module UpdateNotifier
       else
         puts "First run! Creating `#{last_seen_file}` to track #{platform} updates on Apple's '#{channel}' channel."
 
-        if rapid_channel?
-          latest_version_number = "#{highest_version(pmv)["ProductVersion"]} #{highest_version(pmv)["ProductVersionExtra"]}"
-        else
-          latest_version_number = highest_version(pmv)["ProductVersion"]
-        end
+        latest_version_number = version_number(highest_version(pmv))
 
         update_last_seen(latest_version_number)
         latest_version_number
@@ -125,25 +121,29 @@ module UpdateNotifier
       else
         puts "New update found: #{platform} #{latest_update["ProductVersion"]} #{latest_update["ProductVersionExtra"]} (#{latest_update["PostingDate"]}) -- Sending notifications."
 
-        if rapid_channel?
-          latest_version = "#{latest_update["ProductVersion"]} #{latest_update["ProductVersionExtra"]}"
-        else
-          latest_version = latest_update["ProductVersion"]
-        end
+        latest_version_number = version_number(latest_update)
 
-        update_last_seen(latest_version)
+        update_last_seen(latest_version_number)
 
         cli = UpdateNotifier::CLI.new
         notification_text = cli.config["notification_text"].dup
         notification_text.gsub!("$PLATFORM", platform)
-        notification_text.gsub!("$LINK",     security_link(latest_version))
-        notification_text.gsub!("$VERSION",  latest_version)
+        notification_text.gsub!("$LINK",     security_link(latest_version_number))
+        notification_text.gsub!("$VERSION",  latest_version_number)
         cli.send_notifications(notification_text)
       end
     end
 
     def update_last_seen(version)
       File.write(last_seen_file, version)
+    end
+
+    def version_number(update)
+      if rapid_channel?
+        "#{update["ProductVersion"]} #{update["ProductVersionExtra"]}"
+      else
+        update["ProductVersion"]
+      end
     end
 
   end

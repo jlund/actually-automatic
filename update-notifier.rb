@@ -146,23 +146,15 @@ module UpdateNotifier
 
     def show_release(channel, platform)
       release_channel = UpdateNotifier::Channel.new(channel, platform, pmv)
+      latest          = release_channel.highest_version(release_channel.pmv)
 
-      latest = release_channel.highest_version(release_channel.pmv)
-
+      latest_version_number = release_channel.version_number(latest)
 
       say("Platform: #{platform} | Channel: #{channel}", :bold)
-      puts "  Version:  #{latest["ProductVersion"]}"
-
-      if latest["ProductVersionExtra"].nil?
-        link_version = latest["ProductVersion"]
-      else
-        link_version = "#{latest["ProductVersion"]} #{latest["ProductVersionExtra"]}"
-        puts "  Rapid:    #{latest["ProductVersionExtra"]}"
-      end
-
+      puts "  Version:  #{latest_version_number}"
       puts "  Released: #{latest["PostingDate"]}"
       puts "  Expires:  #{latest["ExpirationDate"]}"
-      puts "  Link:     #{release_channel.security_link(link_version)}"
+      puts "  Link:     #{release_channel.security_link(latest_version_number)}"
       puts "  Supported devices (#{latest["SupportedDevices"].size}):"
       puts "    #{latest["SupportedDevices"]}\n\n"
     end
