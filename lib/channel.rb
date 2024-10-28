@@ -84,8 +84,9 @@ module UpdateNotifier
     end
 
     def security_link(version)
-      rapid_index_url     = "https://support.apple.com/en-us/102657"
-      security_index_url  = "https://support.apple.com/en-us/100100"
+      apple_support_url   = "https://support.apple.com"
+      rapid_index_url     = "#{apple_support_url}/en-us/102657"
+      security_index_url  = "#{apple_support_url}/en-us/100100"
       security_index_html = HTTParty.get(security_index_url).body
 
       doc = Nokogiri::HTML(security_index_html)
@@ -112,7 +113,7 @@ module UpdateNotifier
       if version_link.nil?
         rapid_channel? ? rapid_index_url : security_index_url
       else
-        version_link[:href]
+        apple_support_url + version_link[:href]
       end
     end
 
