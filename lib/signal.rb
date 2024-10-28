@@ -7,13 +7,13 @@ module UpdateNotifier
 
       unless config['groups'].nil?
         config['groups'].each do |group|
-          system("#{config['signal_cli_executable']}", "-u", "#{config['account_phone']}", "send", "-m", "#{notification_message}", "-g", "#{group}")
+          system("#{config['signal_cli_executable']}", "--trust-new-identities", "always", "-u", "#{config['account_phone']}", "send", "-m", "#{notification_message}", "-g", "#{group}")
         end
       end
 
       unless config['recipients'].nil?
         config['recipients'].each do |recipient|
-          system("#{config['signal_cli_executable']}", "-u", "#{config['account_phone']}", "send", "-m", "#{notification_message}", "#{recipient}")
+          system("#{config['signal_cli_executable']}", "--trust-new-identities", "always", "-u", "#{config['account_phone']}", "send", "-m", "#{notification_message}", "#{recipient}")
         end
       end
     end
