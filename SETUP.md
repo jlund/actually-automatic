@@ -1,7 +1,7 @@
 # Actually Automatic
 ## Self-Hosting Instructions
 
-### Initial Setup (Ubuntu 22.04)
+### Initial Setup (Ubuntu 24.04)
 1. Install Ruby and compilation dependencies:
    * `sudo apt install ruby ruby-bundler ruby-dev build-essential`
 2. Create a new user account that will run the update checks and whose home directory will store the program:
