@@ -48,5 +48,9 @@ If these commands both work, then you're almost done. The final step is to confi
 3. Add this line to the bottom of the file to check for iOS and macOS updates every 45 minutes:
    * `*/45 * * * * cd /home/softwareupdates/actually-automatic && ruby update-notifier.rb notify --ios --macos`
    * Be sure to update the home directory if you chose a different username.
+4. **Optional:** If you have configured Signal notifications via `signal-cli`, you may also want to add the following lines to the crontab to periodically process incoming messages (e.g. when new people join the group chat where you're sending notifications) and to clean up attachment downloads:
+   * `15 */4 * * * /usr/local/bin/signal-cli -u +18015551234 receive`
+     * Be sure to replace the 555 example number with the number `signal-cli` is using.
+   * `@daily rm -rf /home/softwareupdates/.local/share/signal-cli/attachments`
 
 All set! You can verify that the cron is working by watching the timestamp in the `LAST_RUN` file in the repo directory.
